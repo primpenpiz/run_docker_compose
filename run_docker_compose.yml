@@ -1,0 +1,9 @@
+---
+- name: Run Docker Compose
+  hosts: servers
+  become: yes
+  tasks:
+    - name: Change to project directory
+      ansible.builtin.shell: cd /path/to/your/docker-compose/project && docker-compose up -d
+      args:
+        chdir: /path/to/your/docker-compose/project
