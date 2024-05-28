@@ -2,7 +2,7 @@
 - name: Cleanup Disk Space
   hosts: prim
   tasks:
-    - name: Find and delete old log files
+    - name: Find  old log files
       ansible.builtin.find:
         paths: /var/log/nginx
         patterns: "*.log"
