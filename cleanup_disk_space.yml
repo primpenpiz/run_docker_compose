@@ -1,0 +1,18 @@
+---
+- name: Cleanup Disk Space
+  hosts: servers
+  become: yes
+  tasks:
+    - name: Find and delete old log files
+      find:
+        paths: /path/to/logs
+        age: 7d
+        recurse: yes
+        patterns: "*.log"
+      register: files_to_delete
+
+    - name: Delete old log files
+      file:
+        path: "{{ item.path }}"
+        state: absent
+      loop: "{{ files_to_delete.files }}"
