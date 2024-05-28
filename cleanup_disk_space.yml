@@ -1,15 +1,15 @@
 ---
 - name: Cleanup Disk Space
-  hosts: servers
+  hosts: all
   become: yes
   tasks:
     - name: Find and delete old log files
       find:
-        paths: /path/to/logs
+        paths: /var/log/nginx
         age: 7d
         recurse: yes
         patterns: "*.log"
-      register: files_to_delete
+      register: error.log
 
     - name: Delete old log files
       file:
