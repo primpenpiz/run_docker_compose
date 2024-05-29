@@ -1,15 +1,17 @@
 ---
 - name: Cleanup Disk Space
-  hosts: prim
+  hosts: servers
+  become: yes
   tasks:
-    - name: Find  old log files
+    - name: Find all log files
       ansible.builtin.find:
-        paths: /var/log/nginx
+        paths: /var/log/nginx  # Adjust path to your log directory
+        recurse: yes
         patterns: "*.log"
-      register: log_files
+      register: files_to_delete
 
-    - name: Delete old log files
+    - name: Delete all log files
       ansible.builtin.file:
         path: "{{ item.path }}"
         state: absent
-      loop: "{{ log_files.files }}"
+      loop: "{{ files_to_delete.files }}"
