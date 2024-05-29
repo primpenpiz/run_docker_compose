@@ -1,6 +1,6 @@
 ---
 - name: Cleanup Disk Space
-  hosts: servers
+  hosts: all
   become: yes
   tasks:
     - name: Find all log files
