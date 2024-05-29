@@ -1,6 +1,6 @@
 ---
 - name: Cleanup Disk Space
-  hosts: all
+  hosts: prim
   become: yes
   tasks:
     - name: Find all log files
