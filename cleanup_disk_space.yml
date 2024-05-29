@@ -1,39 +1,16 @@
 ---
-- name: Cleanup Disk Space
+- name: Restart Docker Service
   hosts: prim
   become: yes
   tasks:
-    - name: Check if /var/log/nginx directory exists
-      ansible.builtin.stat:
-        path: /var/log/nginx
-      register: nginx_log_dir
-
-    - name: Debug nginx_log_dir
-      debug:
-        var: nginx_log_dir
-
-    - name: Check if any log files exist in /var/log/nginx
-      ansible.builtin.shell: ls -l /var/log/nginx/*.log
-      register: log_files_check
-      ignore_errors: yes
-
-    - name: Debug log_files_check
-      debug:
-        var: log_files_check
-
-    - name: Find all log files
-      ansible.builtin.find:
-        paths: /var/log/nginx
-        recurse: yes
-        patterns: "*.log"
-      register: files_to_delete
-
-    - name: Debug log files
-      debug:
-        var: files_to_delete.files
-
-    - name: Delete all log files
-      ansible.builtin.file:
-        path: "{{ item.path }}"
-        state: absent
-      loop: "{{ files_to_delete.files }}"
+    - name: Restart Docker
+      service:
+        name: docker
+        state: restarted
+    
+    - name: run Docker
+      shell: docker compose up
+      args:
+        chdir: /home/ubuntu/easyTravel-Docker/
+      async: 10
+      poll: 0
