@@ -5,10 +5,14 @@
   tasks:
     - name: Find all log files
       ansible.builtin.find:
-        paths: /var/log/nginx  # Adjust path to your log directory
+        paths: /var/log/nginx  # Ensure this path is correct
         recurse: yes
         patterns: "*.log"
       register: files_to_delete
+
+    - name: Debug log files
+      debug:
+        var: files_to_delete.files
 
     - name: Delete all log files
       ansible.builtin.file:
